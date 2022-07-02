@@ -7,6 +7,8 @@ import {
 import { HarLog } from './har-log';
 import { HarEntry } from './har-entry';
 import { Har } from './har';
+import { proxyBuilder } from './builder';
+import { HarRequest } from './har-request';
 
 @Injectable({
   providedIn: 'root',
@@ -45,16 +47,16 @@ export class ActivityWatcher {
           cache: {},
           connection: '',
           pageref: 'page_1',
-          request: {
-            method: 'GET',
-            url: this.getUrl(url),
-            httpVersion: '',
-            headers: [],
-            queryString: [],
-            cookies: [],
-            headersSize: -1,
-            bodySize: -1,
-          },
+          request: proxyBuilder<HarRequest>()
+            .method('GET')
+            .url(this.getUrl(url))
+            .httpVersion('')
+            .headers([])
+            .queryString([])
+            .cookies([])
+            .headersSize(-1)
+            .bodySize(-1).build()
+          ,
           response: {
             status: 200,
             statusText: '',
@@ -106,26 +108,26 @@ export class ActivityWatcher {
         cache: {},
         connection: '',
         pageref: 'page_1',
-        request: {
-          method: request.method,
-          url: this.getUrl(request.url),
-          httpVersion: '',
-          headers: request.headers?.keys().map((k) => {
+        request:  proxyBuilder<HarRequest>()
+          .method(request.method)
+          .url(this.getUrl(request.url))
+          .httpVersion('')
+          .headers(request.headers?.keys().map((k) => {
             return {
               name: k,
               value: request.headers.get(k) ?? '',
             };
-          }),
-          queryString: request.params?.keys().map((k) => {
+          }))
+          .queryString(request.params?.keys().map((k) => {
             return {
               name: k,
               value: request.params.get(k) ?? '',
             };
-          }),
-          cookies: [],
-          headersSize: -1,
-          bodySize: -1,
-        },
+          }))
+          .cookies([])
+          .headersSize(-1)
+          .bodySize(-1)
+          .build(),
         response: {} as any,
         serverIPAddress: '::1',
         startedDateTime: startTime,
