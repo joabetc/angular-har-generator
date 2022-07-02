@@ -9,6 +9,7 @@ import { HarEntry } from './har-entry';
 import { Har } from './har';
 import { proxyBuilder } from './builder';
 import { HarRequest } from './har-request';
+import { HarResponse } from './har-response';
 
 @Injectable({
   providedIn: 'root',
@@ -168,26 +169,25 @@ export class ActivityWatcher {
       if (!entry) {
         return;
       }
-      entry.response = {
-        status: response.status,
-        statusText: response.statusText,
-        httpVersion: '',
-        headers: response.headers?.keys().map((k) => {
+      entry.response = proxyBuilder<HarResponse>()
+        .status(response.status)
+        .statusText(response.statusText)
+        .httpVersion('')
+        .headers(response.headers?.keys().map((k) => {
           return {
             name: k,
             value: response.headers.get(k) ?? '',
           };
-        }),
-        cookies: [],
-        content: {
+        }))
+        .cookies([])
+        .content({
           size: response.body?.length || 0,
           mimeType: 'application/json', // todo not sure if there's any way to get this
           text: JSON.stringify(response.body),
-        },
-        redirectURL: '',
-        headersSize: -1,
-        bodySize: -1,
-      };
+        })
+        .redirectURL('')
+        .headersSize(-1)
+        .bodySize(-1).build();
 
       const delay = new Date().getTime() - entry.startedDateTime.getTime();
       entry.timings.wait = delay;
@@ -213,26 +213,25 @@ export class ActivityWatcher {
       if (!entry) {
         return;
       }
-      entry.response = {
-        status: error.status,
-        statusText: error.statusText,
-        httpVersion: '',
-        headers: error.headers?.keys().map((k) => {
+      entry.response = proxyBuilder<HarResponse>()
+        .status(error.status)
+        .statusText(error.statusText)
+        .httpVersion('')
+        .headers(error.headers?.keys().map((k) => {
           return {
             name: k,
             value: error.headers.get(k) ?? '',
           };
-        }),
-        cookies: [],
-        content: {
+        }))
+        .cookies([])
+        .content({
           size: error.error?.length || 0,
           mimeType: 'application/json', // todo not sure if there's any way to get this
           text: JSON.stringify(error.error),
-        },
-        redirectURL: '',
-        headersSize: -1,
-        bodySize: -1,
-      };
+        })
+        .redirectURL('')
+        .headersSize(-1)
+        .bodySize(-1).build();
 
       const delay = new Date().getTime() - entry.startedDateTime.getTime();
       entry.timings.wait = delay;
