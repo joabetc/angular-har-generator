@@ -58,21 +58,20 @@ export class ActivityWatcher {
             .headersSize(-1)
             .bodySize(-1).build()
           ,
-          response: {
-            status: 200,
-            statusText: '',
-            httpVersion: '',
-            headers: [],
-            cookies: [],
-            content: {
+          response: proxyBuilder<HarResponse>()
+            .status(200)
+            .statusText('')
+            .httpVersion('')
+            .headers([])
+            .cookies([])
+            .content({
               size: 0,
               mimeType: 'text/html',
               text: 'Generated',
-            },
-            redirectURL: '',
-            headersSize: -1,
-            bodySize: -1,
-          },
+            })
+            .redirectURL('')
+            .headersSize(-1)
+            .bodySize(-1).build(),
           serverIPAddress: '::1',
           startedDateTime: startTime,
           time: 0,
