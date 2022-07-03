@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor, HttpResponse, HttpErrorResponse
+  HttpInterceptor, HttpResponse, HttpErrorResponse, HttpStatusCode
 } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {ActivityWatcher} from './activity-watcher';
@@ -50,7 +50,7 @@ export class CustomInterceptor implements HttpInterceptor {
         },
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
-            if (err.status !== 401) {
+            if (err.status !== HttpStatusCode.Unauthorized) {
               if (!exclude.includes(req.url)) {
                 this.activityWatcher.addError(err, startTime);
               }
