@@ -181,7 +181,7 @@ export class ActivityWatcher {
         .cookies([])
         .content({
           size: response.body?.length || 0,
-          mimeType: 'application/json', // todo not sure if there's any way to get this
+          mimeType: 'application/json', // TODO: not sure if there's any way to get this
           text: JSON.stringify(response.body),
         })
         .redirectURL('')
@@ -225,7 +225,7 @@ export class ActivityWatcher {
         .cookies([])
         .content({
           size: error.error?.length || 0,
-          mimeType: 'application/json', // todo not sure if there's any way to get this
+          mimeType: 'application/json', // TODO: not sure if there's any way to get this
           text: JSON.stringify(error.error),
         })
         .redirectURL('')
