@@ -17,10 +17,7 @@ export class CustomInterceptor implements HttpInterceptor {
   constructor(private readonly activityWatcher: ActivityWatcher) {
   }
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const startTime = new Date();
     if (!this.exclude.includes(req.url)) {
       this.activityWatcher.addRequest(req, startTime);
