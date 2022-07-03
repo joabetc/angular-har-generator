@@ -56,6 +56,7 @@ export class CustomInterceptor implements HttpInterceptor {
     );
   }
 }
+
 function createFakeResponse(): HttpResponse<any> {
   return new HttpResponse({
     status: 200, body: {
