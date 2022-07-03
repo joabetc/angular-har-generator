@@ -12,6 +12,8 @@ import {tap} from 'rxjs/operators';
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
 
+  private exclude = ['/api/auth'];
+
   constructor(private readonly activityWatcher: ActivityWatcher) {
   }
 
@@ -19,14 +21,13 @@ export class CustomInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const exclude = ['/api/auth'];
     const startTime = new Date();
-    if (!exclude.includes(req.url)) {
+    if (!this.exclude.includes(req.url)) {
       this.activityWatcher.addRequest(req, startTime);
     }
 
     if (req.url === 'api/fake') {
-      const response = createFakeResponse();
+      const response = this.createFakeResponse();
 
       this.activityWatcher.addResponse(response, startTime);
 
@@ -35,35 +36,38 @@ export class CustomInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       tap(
-        (response) => {
-          if (response instanceof HttpResponse) {
-            if (!exclude.includes(req.url)) {
-              this.activityWatcher.addResponse(response, startTime);
-            }
-          }
-        },
-        (err: any) => {
-          if (err instanceof HttpErrorResponse) {
-            if (err.status !== HttpStatusCode.Unauthorized) {
-              if (!exclude.includes(req.url)) {
-                this.activityWatcher.addError(err, startTime);
-              }
-              return;
-            }
-          }
-        }
+        (response) => this.handleResponse(response, req, startTime),
+        (err: any) => this.handleError(err, req, startTime)
       )
     );
   }
-}
 
-function createFakeResponse(): HttpResponse<any> {
-  return new HttpResponse({
-    status: 200, body: {
-      source: 'local',
-      message: 'this represents a local api call'
-    },
-    url: `${window.location.origin}/api/fake`
-  });
-}
+  createFakeResponse(): HttpResponse<any> {
+    return new HttpResponse({
+      status: 200, body: {
+        source: 'local',
+        message: 'this represents a local api call'
+      },
+      url: `${window.location.origin}/api/fake`
+    });
+  }
 
+  handleResponse(response: HttpEvent<any>, req: HttpRequest<any>, startTime: Date) {
+    if (response instanceof HttpResponse) {
+      if (!this.exclude.includes(req.url)) {
+        this.activityWatcher.addResponse(response, startTime);
+      }
+    }
+  }
+
+  handleError(err: any, req: HttpRequest<any>, startTime: Date) {
+    if (err instanceof HttpErrorResponse) {
+      if (err.status !== HttpStatusCode.Unauthorized) {
+        if (!this.exclude.includes(req.url)) {
+          this.activityWatcher.addError(err, startTime);
+        }
+        return;
+      }
+    }
+  }
+}
