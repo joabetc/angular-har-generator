@@ -15,7 +15,7 @@ export class AppComponent {
   constructor(private readonly activityWatcher: ActivityWatcher, router: Router, private readonly httpClient: HttpClient) {
     router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        activityWatcher.startNewActivity((event as NavigationStart).url);
+        activityWatcher.startNewActivity(event.url);
       }
     });
   }
