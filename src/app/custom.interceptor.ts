@@ -26,13 +26,7 @@ export class CustomInterceptor implements HttpInterceptor {
     }
 
     if (req.url === 'api/fake') {
-      const response = new HttpResponse({
-        status: 200, body: {
-          source: 'local',
-          message: 'this represents a local api call'
-        },
-        url: `${window.location.origin}/api/fake`
-      });
+      const response = createFakeResponse();
 
       this.activityWatcher.addResponse(response, startTime);
 
@@ -62,3 +56,13 @@ export class CustomInterceptor implements HttpInterceptor {
     );
   }
 }
+function createFakeResponse(): HttpResponse<any> {
+  return new HttpResponse({
+    status: 200, body: {
+      source: 'local',
+      message: 'this represents a local api call'
+    },
+    url: `${window.location.origin}/api/fake`
+  });
+}
+
