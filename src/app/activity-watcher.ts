@@ -144,7 +144,7 @@ export class ActivityWatcher {
       };
       if (request.body) {
         entry.request.postData = {
-          mimeType: 'application/json', // todo not sure if there's any way to get this
+          mimeType: request.detectContentTypeHeader(),//'application/json', // todo not sure if there's any way to get this
           text: JSON.stringify(request.body),
         };
       }
