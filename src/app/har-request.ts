@@ -59,7 +59,7 @@ export interface HarRequest {
    */
   bodySize: number;
   postData?: {
-    mimeType: string;
+    mimeType: string | null;
     text: string;
   };
 }
