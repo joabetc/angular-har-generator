@@ -5,7 +5,7 @@ type Builder<T> = {
 export function proxyBuilder<T>(): Builder<T> {
   var built: any = {};
   var builder = new Proxy({}, {
-    get: function(target, prop, receiver) {
+    get: function(_target, prop, _receiver) {
       if (prop === 'build') return () => built;
       return (x: any): any => {
         (built[prop] = x);
