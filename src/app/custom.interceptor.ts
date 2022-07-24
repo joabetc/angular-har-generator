@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
+import { 
+  HttpErrorResponse,
   HttpEvent,
-  HttpInterceptor, HttpResponse, HttpErrorResponse, HttpStatusCode
-} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {ActivityWatcher} from './activity-watcher';
-import {tap} from 'rxjs/operators';
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse,
+  HttpStatusCode } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { ActivityWatcher } from './activity-watcher';
 
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
