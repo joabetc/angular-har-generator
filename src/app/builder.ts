@@ -3,8 +3,8 @@ type Builder<T> = {
 } & { build(): T }
 
 export function proxyBuilder<T>(): Builder<T> {
-  var built: any = {};
-  var builder = new Proxy({}, {
+  let built: any = {};
+  let builder = new Proxy({}, {
     get: function(_target, prop, _receiver) {
       if (prop === 'build') return () => built;
       return (x: any): any => {
