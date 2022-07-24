@@ -1,5 +1,5 @@
-import { HarPage } from './har-page';
 import { HarEntry } from './har-entry';
+import { HarPage } from './har-page';
 
 export interface HarLog {
   /**

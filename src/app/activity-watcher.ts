@@ -1,13 +1,13 @@
-﻿import { Injectable } from '@angular/core';
-import {
+﻿import {
   HttpErrorResponse,
   HttpRequest,
-  HttpResponse,
+  HttpResponse
 } from '@angular/common/http';
-import { HarLog } from './har-log';
-import { HarEntry } from './har-entry';
-import { Har } from './har';
+import { Injectable } from '@angular/core';
 import { proxyBuilder } from './builder';
+import { Har } from './har';
+import { HarEntry } from './har-entry';
+import { HarLog } from './har-log';
 import { HarRequest } from './har-request';
 import { HarResponse } from './har-response';
 
